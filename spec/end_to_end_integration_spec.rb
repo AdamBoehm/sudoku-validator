@@ -1,3 +1,4 @@
+require_relative "../spec/spec_helper"
 require_relative "../lib/validator"
 
 describe "End-to-end test" do
@@ -38,6 +39,22 @@ describe "End-to-end test" do
 
         expect(result).to(
           eq("This sudoku is invalid."),
+          "Expected #{fixture} to be invalid but it wasn't."
+        )
+      end
+    end
+  end
+
+  context "when the sudoku puzzle format is invalid" do
+    invalid_fixtures = ["spec/fixtures/invalid_puzzle_length.sudoku",
+                        "spec/fixtures/invalid_puzzle_string.sudoku"]
+
+    invalid_fixtures.each do |fixture|
+      it "returns a string saying so" do
+        result = Validator.validate(File.read(fixture))
+
+        expect(result).to(
+          eq("This puzzle format is invalid."),
           "Expected #{fixture} to be invalid but it wasn't."
         )
       end
